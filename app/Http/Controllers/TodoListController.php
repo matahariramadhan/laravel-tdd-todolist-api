@@ -45,10 +45,9 @@ class TodoListController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(TodoList $todolist)
     {
-        $list = TodoList::find($id);
-        return response($list);
+        return response($todolist);
     }
 
     /**

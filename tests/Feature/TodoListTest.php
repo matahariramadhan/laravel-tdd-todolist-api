@@ -12,11 +12,17 @@ class TodoListTest extends TestCase
 {
     use RefreshDatabase;
 
+    private $list;
+
+    public function setUp(): void
+    {
+        parent::setUp();
+
+        $this->list = TodoList::factory()->create(['name' => 'my-list']);
+    }
+
     public function test_fetch_all_todo_list()
     {
-        // buat todo-list di database agar bisa difetch
-        TodoList::factory()->create(['name' => 'my-list']);
-
         $response = $this->getJson(route('todo-list.index'));
         
         // assert jumlah keseluruhan dan isi object tiap todo-list
@@ -26,11 +32,9 @@ class TodoListTest extends TestCase
 
     public function test_fetch_single_todo_list()
     {
-        $list = TodoList::factory()->create();
-
-        $response = $this->getJson(route('todo-list.show', $list->id));
+        $response = $this->getJson(route('todo-list.show', $this->list->id));
 
         $response->assertOk();
-        $this->assertEquals($list->name,$response->json()['name']);
+        $this->assertEquals($this->list->name,$response->json()['name']);
     }
 }
