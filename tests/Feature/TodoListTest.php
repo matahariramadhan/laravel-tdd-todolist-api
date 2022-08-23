@@ -37,4 +37,14 @@ class TodoListTest extends TestCase
         $response->assertOk();
         $this->assertEquals($this->list->name,$response->json()['name']);
     }
+    
+    public function test_store_single_todo_list()
+    {
+        $list = TodoList::factory()->make();
+
+        $response = $this->postJson(route('todo-list.store'), ['name' => $list->name]);
+
+        $response->assertCreated();
+        $this->assertEquals($list->name, $response['name']);
+    }
 }
