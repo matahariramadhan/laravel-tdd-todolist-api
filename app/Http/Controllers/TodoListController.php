@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\TodoListRequest;
 use App\Models\TodoList;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -25,9 +26,8 @@ class TodoListController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(TodoListRequest $request)
     {
-        $request->validate(['name' => 'required']);
         $list = TodoList::create($request->all());
         return response()->json($list, Response::HTTP_CREATED);
 
@@ -51,12 +51,8 @@ class TodoListController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request,TodoList $todo_list)
+    public function update(TodoListRequest $request,TodoList $todo_list)
     {
-        $request->validate([
-            'name' => 'required'
-        ]);
-
         $todo_list->update($request->all());
 
         return response()->json($todo_list, Response::HTTP_OK);
