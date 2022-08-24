@@ -16,7 +16,7 @@ class TodoListController extends Controller
     public function index()
     {
         $lists = TodoList::all();
-        return response($lists);
+        return response()->json($lists, Response::HTTP_OK);
     }
 
     /**
@@ -29,7 +29,8 @@ class TodoListController extends Controller
     {
         $request->validate(['name' => 'required']);
         $list = TodoList::create($request->all());
-        return response($list, Response::HTTP_CREATED);
+        return response()->json($list, Response::HTTP_CREATED);
+
     }
 
     /**
@@ -40,7 +41,7 @@ class TodoListController extends Controller
      */
     public function show(TodoList $todolist)
     {
-        return response($todolist);
+        return response()->json($todolist);
     }
 
     /**
@@ -50,9 +51,15 @@ class TodoListController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request,TodoList $todolist)
     {
-        //
+        // $request->validate([
+        //     'name' => 'required'
+        // ]);
+
+        $todolist->update($request->all());
+
+        return response()->json($todolist, Response::HTTP_OK);
     }
 
     /**
@@ -61,8 +68,9 @@ class TodoListController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(TodoList $todolist)
     {
-        //
+        $list = $todolist->delete();
+        return response()->json($list, Response::HTTP_OK);
     }
 }
