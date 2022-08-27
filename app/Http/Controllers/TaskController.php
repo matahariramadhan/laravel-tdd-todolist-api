@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Task;
+use App\Models\TodoList;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
@@ -25,9 +26,11 @@ class TaskController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, TodoList $todo_list)
     {
-        $task = Task::create($request->all());
+        $task = $todo_list->tasks()->create($request->all());
+        // $request['todo_list_id'] = $todo_list->id;
+        // $task = Task::create($request->all());
         return response()->json($task, Response::HTTP_CREATED);
     }
 
@@ -49,9 +52,10 @@ class TaskController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Task $task)
     {
-        //
+        $task->update($request->all());
+        return response()->json($task);
     }
 
     /**
