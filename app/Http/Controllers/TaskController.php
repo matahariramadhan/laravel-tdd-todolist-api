@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Task;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class TaskController extends Controller
 {
@@ -15,7 +16,7 @@ class TaskController extends Controller
     public function index()
     {
         $task = Task::all();
-        return response()->json($task);
+        return response()->json($task, Response::HTTP_OK);
     }
 
     /**
@@ -26,7 +27,8 @@ class TaskController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $task = Task::create($request->all());
+        return response()->json($task, Response::HTTP_CREATED);
     }
 
     /**
@@ -58,8 +60,9 @@ class TaskController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
-    {
-        //
+    public function destroy(Task $task)
+    { 
+        $task->delete();
+        return response()->json([], Response::HTTP_NO_CONTENT);
     }
 }
