@@ -14,9 +14,10 @@ class TaskController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(TodoList $todo_list)
     {
-        $task = Task::all();
+        $task = $todo_list->tasks;
+        // $task = Task::all();
         return response()->json($task, Response::HTTP_OK);
     }
 
